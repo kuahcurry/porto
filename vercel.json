@@ -2,11 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "outputDirectory": "public/build",
-  "redirects": [
+  "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "https://porto-production-c1f8.up.railway.app/$1",
-      "permanent": false
+      "destination": "https://porto-production-c1f8.up.railway.app/$1"
     }
   ]
 }

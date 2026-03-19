@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { ProjectForm, ProjectItem } from '@/types/admin';
+import type { ChangeEvent, FormEvent} from 'react';
+import { useState } from 'react';
+import type { ProjectForm, ProjectItem } from '@/types/admin';
 
 type ProjectsManagerProps = {
     projects: ProjectItem[];

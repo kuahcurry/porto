@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent } from 'react';
-import { ProfilePayload } from '@/types/admin';
+import type { ChangeEvent, FormEvent } from 'react';
+import type { ProfilePayload } from '@/types/admin';
 
 type ProfileFormProps = {
     profile: ProfilePayload;

@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { ExperienceForm, ExperienceItem } from '@/types/admin';
+import type { ChangeEvent, FormEvent} from 'react';
+import { useState } from 'react';
+import type { ExperienceForm, ExperienceItem } from '@/types/admin';
 
 type ExperienceManagerProps = {
     experiences: ExperienceItem[];

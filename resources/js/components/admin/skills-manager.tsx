@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { SkillForm, SkillItem, SkillType } from '@/types/admin';
+import type { ChangeEvent, FormEvent} from 'react';
+import { useState } from 'react';
+import type { SkillForm, SkillItem, SkillType } from '@/types/admin';
 
 type SkillsManagerProps = {
     skills: SkillItem[];

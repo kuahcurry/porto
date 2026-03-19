@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { OngoingProjectForm, OngoingProjectItem } from '@/types/admin';
+import type { ChangeEvent, FormEvent} from 'react';
+import { useState } from 'react';
+import type { OngoingProjectForm, OngoingProjectItem } from '@/types/admin';
 
 type OngoingManagerProps = {
     ongoingProjects: OngoingProjectItem[];

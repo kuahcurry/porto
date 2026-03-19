@@ -1,12 +1,13 @@
 import { Head } from '@inertiajs/react';
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import type { FormEvent} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ExperienceManager } from '@/components/admin/experience-manager';
 import { OngoingManager } from '@/components/admin/ongoing-manager';
 import { ProfileForm } from '@/components/admin/profile-form';
 import { ProjectsManager } from '@/components/admin/projects-manager';
 import { SkillsManager } from '@/components/admin/skills-manager';
 import { apiUrl, githubRedirectUrl } from '@/lib/api';
-import {
+import type {
     AdminMe,
     ExperienceForm,
     ExperienceItem,
@@ -74,6 +75,7 @@ export default function AdminPage() {
 
     const toNumber = (value: string, fallback = 0): number => {
         const parsed = Number.parseInt(value, 10);
+
         return Number.isNaN(parsed) ? fallback : parsed;
     };
 
@@ -81,11 +83,13 @@ export default function AdminPage() {
         if (status === 401) {
             setError('Session expired. Login again with GitHub.');
             setAdmin(null);
+
             return true;
         }
 
         if (status === 403) {
             setError('This GitHub account is not allowed.');
+
             return true;
         }
 
@@ -168,7 +172,7 @@ export default function AdminPage() {
                     setProjects(portfolioJson.data?.projects ?? []);
                     setOngoingProjects(portfolioJson.data?.ongoing_projects ?? []);
                 }
-            } catch (_e) {
+            } catch {
                 setError('Unable to initialize dashboard state.');
             } finally {
                 setLoading(false);
@@ -198,11 +202,13 @@ export default function AdminPage() {
 
             if (response.status === 401) {
                 handleForbiddenOrUnauthorized(response.status);
+
                 return;
             }
 
             if (response.status === 403) {
                 handleForbiddenOrUnauthorized(response.status);
+
                 return;
             }
 
@@ -210,12 +216,13 @@ export default function AdminPage() {
                 const payload =
                     (await response.json()) as { message?: string } | null;
                 setError(payload?.message ?? 'Failed to save profile.');
+
                 return;
             }
 
             setMessage('Profile updated and immediately available on public API.');
             await loadPortfolio();
-        } catch (_e) {
+        } catch {
             setError('Network error while saving profile.');
         } finally {
             setSavingProfile(false);
@@ -256,14 +263,17 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 await applyErrorResponse(response, 'Failed to save skill.');
+
                 return false;
             }
 
             await loadPortfolio();
             setMessage(isEdit ? 'Skill updated.' : 'Skill created.');
+
             return true;
-        } catch (_e) {
+        } catch {
             setError('Network error while saving skill.');
+
             return false;
         } finally {
             setSavingSkill(false);
@@ -290,12 +300,13 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 setError('Failed to delete skill.');
+
                 return;
             }
 
             await loadPortfolio();
             setMessage('Skill deleted.');
-        } catch (_e) {
+        } catch {
             setError('Network error while deleting skill.');
         }
     };
@@ -343,14 +354,17 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 await applyErrorResponse(response, 'Failed to save experience.');
+
                 return false;
             }
 
             await loadPortfolio();
             setMessage(isEdit ? 'Experience updated.' : 'Experience created.');
+
             return true;
-        } catch (_e) {
+        } catch {
             setError('Network error while saving experience.');
+
             return false;
         } finally {
             setSavingExperience(false);
@@ -377,12 +391,13 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 setError('Failed to delete experience.');
+
                 return;
             }
 
             await loadPortfolio();
             setMessage('Experience deleted.');
-        } catch (_e) {
+        } catch {
             setError('Network error while deleting experience.');
         }
     };
@@ -427,14 +442,17 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 await applyErrorResponse(response, 'Failed to save project.');
+
                 return false;
             }
 
             await loadPortfolio();
             setMessage(isEdit ? 'Project updated.' : 'Project created.');
+
             return true;
-        } catch (_e) {
+        } catch {
             setError('Network error while saving project.');
+
             return false;
         } finally {
             setSavingProject(false);
@@ -461,12 +479,13 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 setError('Failed to delete project.');
+
                 return;
             }
 
             await loadPortfolio();
             setMessage('Project deleted.');
-        } catch (_e) {
+        } catch {
             setError('Network error while deleting project.');
         }
     };
@@ -518,14 +537,17 @@ export default function AdminPage() {
                     response,
                     'Failed to save ongoing project.',
                 );
+
                 return false;
             }
 
             await loadPortfolio();
             setMessage(isEdit ? 'Ongoing project updated.' : 'Ongoing project created.');
+
             return true;
-        } catch (_e) {
+        } catch {
             setError('Network error while saving ongoing project.');
+
             return false;
         } finally {
             setSavingOngoing(false);
@@ -540,12 +562,12 @@ export default function AdminPage() {
             const response = await fetch(
                 apiUrl(`/api/v1/admin/ongoing-projects/${id}`),
                 {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN': csrfToken(),
-                },
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        Accept: 'application/json',
+                        'X-CSRF-TOKEN': csrfToken(),
+                    },
                 },
             );
 
@@ -555,12 +577,13 @@ export default function AdminPage() {
 
             if (!response.ok) {
                 setError('Failed to delete ongoing project.');
+
                 return;
             }
 
             await loadPortfolio();
             setMessage('Ongoing project deleted.');
-        } catch (_e) {
+        } catch {
             setError('Network error while deleting ongoing project.');
         }
     };
@@ -585,7 +608,7 @@ export default function AdminPage() {
             } else {
                 setError('Logout failed.');
             }
-        } catch (_e) {
+        } catch {
             setError('Network error while logging out.');
         }
     };

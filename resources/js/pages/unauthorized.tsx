@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { githubRedirectUrl } from '@/lib/api';
 
 export default function Unauthorized() {
     const reason =
@@ -27,7 +28,7 @@ export default function Unauthorized() {
 
                         <div className="flex flex-wrap gap-3">
                             <a
-                                href="/api/v1/auth/github/redirect"
+                                href={githubRedirectUrl()}
                                 className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#5a1222] transition hover:bg-white/90"
                             >
                                 Try GitHub login again

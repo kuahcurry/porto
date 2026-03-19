@@ -5,6 +5,7 @@ import { OngoingManager } from '@/components/admin/ongoing-manager';
 import { ProfileForm } from '@/components/admin/profile-form';
 import { ProjectsManager } from '@/components/admin/projects-manager';
 import { SkillsManager } from '@/components/admin/skills-manager';
+import { apiUrl, githubRedirectUrl } from '@/lib/api';
 import {
     AdminMe,
     ExperienceForm,
@@ -100,7 +101,7 @@ export default function AdminPage() {
     };
 
     const loadPortfolio = async (): Promise<void> => {
-        const portfolioRes = await fetch('/api/v1/public/portfolio', {
+        const portfolioRes = await fetch(apiUrl('/api/v1/public/portfolio'), {
             headers: { Accept: 'application/json' },
         });
 
@@ -132,11 +133,11 @@ export default function AdminPage() {
         const init = async (): Promise<void> => {
             try {
                 const [meRes, portfolioRes] = await Promise.all([
-                    fetch('/api/v1/auth/me', {
+                    fetch(apiUrl('/api/v1/auth/me'), {
                         credentials: 'include',
                         headers: { Accept: 'application/json' },
                     }),
-                    fetch('/api/v1/public/portfolio', {
+                    fetch(apiUrl('/api/v1/public/portfolio'), {
                         headers: { Accept: 'application/json' },
                     }),
                 ]);
@@ -184,7 +185,7 @@ export default function AdminPage() {
         setSavingProfile(true);
 
         try {
-            const response = await fetch('/api/v1/admin/profile', {
+            const response = await fetch(apiUrl('/api/v1/admin/profile'), {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -229,8 +230,8 @@ export default function AdminPage() {
         try {
             const isEdit = form.id !== null;
             const endpoint = isEdit
-                ? `/api/v1/admin/skills/${form.id}`
-                : '/api/v1/admin/skills';
+                ? apiUrl(`/api/v1/admin/skills/${form.id}`)
+                : apiUrl('/api/v1/admin/skills');
             const method = isEdit ? 'PUT' : 'POST';
 
             const response = await fetch(endpoint, {
@@ -274,7 +275,7 @@ export default function AdminPage() {
         setError('');
 
         try {
-            const response = await fetch(`/api/v1/admin/skills/${id}`, {
+            const response = await fetch(apiUrl(`/api/v1/admin/skills/${id}`), {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -309,8 +310,8 @@ export default function AdminPage() {
         try {
             const isEdit = form.id !== null;
             const endpoint = isEdit
-                ? `/api/v1/admin/experience/${form.id}`
-                : '/api/v1/admin/experience';
+                ? apiUrl(`/api/v1/admin/experience/${form.id}`)
+                : apiUrl('/api/v1/admin/experience');
             const method = isEdit ? 'PUT' : 'POST';
 
             const response = await fetch(endpoint, {
@@ -361,7 +362,7 @@ export default function AdminPage() {
         setError('');
 
         try {
-            const response = await fetch(`/api/v1/admin/experience/${id}`, {
+            const response = await fetch(apiUrl(`/api/v1/admin/experience/${id}`), {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -394,8 +395,8 @@ export default function AdminPage() {
         try {
             const isEdit = form.id !== null;
             const endpoint = isEdit
-                ? `/api/v1/admin/projects/${form.id}`
-                : '/api/v1/admin/projects';
+                ? apiUrl(`/api/v1/admin/projects/${form.id}`)
+                : apiUrl('/api/v1/admin/projects');
             const method = isEdit ? 'PUT' : 'POST';
 
             const response = await fetch(endpoint, {
@@ -445,7 +446,7 @@ export default function AdminPage() {
         setError('');
 
         try {
-            const response = await fetch(`/api/v1/admin/projects/${id}`, {
+            const response = await fetch(apiUrl(`/api/v1/admin/projects/${id}`), {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -480,8 +481,8 @@ export default function AdminPage() {
         try {
             const isEdit = form.id !== null;
             const endpoint = isEdit
-                ? `/api/v1/admin/ongoing-projects/${form.id}`
-                : '/api/v1/admin/ongoing-projects';
+                ? apiUrl(`/api/v1/admin/ongoing-projects/${form.id}`)
+                : apiUrl('/api/v1/admin/ongoing-projects');
             const method = isEdit ? 'PUT' : 'POST';
 
             const response = await fetch(endpoint, {
@@ -536,14 +537,17 @@ export default function AdminPage() {
         setError('');
 
         try {
-            const response = await fetch(`/api/v1/admin/ongoing-projects/${id}`, {
+            const response = await fetch(
+                apiUrl(`/api/v1/admin/ongoing-projects/${id}`),
+                {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
                     Accept: 'application/json',
                     'X-CSRF-TOKEN': csrfToken(),
                 },
-            });
+                },
+            );
 
             if (handleForbiddenOrUnauthorized(response.status)) {
                 return;
@@ -566,7 +570,7 @@ export default function AdminPage() {
         setError('');
 
         try {
-            const response = await fetch('/api/v1/auth/logout', {
+            const response = await fetch(apiUrl('/api/v1/auth/logout'), {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -631,7 +635,7 @@ export default function AdminPage() {
                             </div>
                         ) : (
                             <a
-                                href="/api/v1/auth/github/redirect"
+                                href={githubRedirectUrl()}
                                 className="inline-flex w-full items-center justify-center rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#5f1227] transition hover:bg-white/90"
                             >
                                 Login with GitHub

@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "https://porto-production-c1f8.up.railway.app/$1"
+      "destination": "https://backendhakimisporto.up.railway.app/$1"
     }
   ]
 }

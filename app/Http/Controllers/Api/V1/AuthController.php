@@ -14,6 +14,14 @@ class AuthController extends Controller
 {
     public function redirectToGithub(): RedirectResponse
     {
+        $frontendUrl = rtrim((string) config('app.frontend_url', env('FRONTEND_URL', '/')), '/');
+        $clientId = (string) config('services.github.client_id');
+        $clientSecret = (string) config('services.github.client_secret');
+
+        if ($clientId === '' || $clientSecret === '') {
+            return redirect()->to($frontendUrl.'/unauthorized?reason=oauth_not_configured');
+        }
+
         return Socialite::driver('github')->redirect();
     }
 
